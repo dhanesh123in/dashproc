@@ -17,7 +17,6 @@ import plotly.graph_objects as go
 from geopy.geocoders import Nominatim
 import random
 
-
 geolocator = Nominatim(user_agent="mapgif"+str(random.randint(0,10000000)))
 
 def get_address(Latitude, Longitude):
@@ -105,6 +104,7 @@ def generate_map_vid(fname,width=480, height=270, zoom_start=18, num_samp=10):
         img_data = mymap._to_png(5)
         img = Image.open(io.BytesIO(img_data))
         img.save(fname+"_gps_"+str(i).zfill(N)+".PNG")
+        img.close()
 
     addrs=[get_address(str(lat),str(long)) for (lat,long) in zip(lats,longs)]
     _=Parallel(n_jobs=-1)(delayed(map2png)(i, lat, long, addr) for i, (lat, long, addr) in enumerate(zip(lats, longs, addrs)))
